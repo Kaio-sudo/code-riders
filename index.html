@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Descubra trilhas, participe de pedais e encontre pessoas que compartilham sua paixão por bicicleta.">
+    <meta name="theme-color" content="#f5f6f1">
+    <title>Code Riders | Pedale. Explore. Conecte-se.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <header class="site-header">
+        <nav class="navbar container" aria-label="Navegação principal">
+            <a class="brand" href="#inicio" aria-label="Code Riders, página inicial">
+                <span class="brand-mark" aria-hidden="true">CR</span>
+                <span class="brand-name">CODE<span>RIDERS</span></span>
+            </a>
+
+            <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false"
+                aria-controls="nav-menu">
+                <span></span><span></span>
+            </button>
+
+            <div class="nav-menu" id="nav-menu">
+                <a href="#inicio">Início</a>
+                <a href="#trilhas">Trilhas</a>
+                <a href="#eventos">Eventos</a>
+                <a href="#encontros">Encontros</a>
+                <a href="#sobre">Sobre</a>
+                <a class="nav-join" href="#eventos">Participar <span aria-hidden="true">↗</span></a>
+            </div>
+        </nav>
+    </header>
+
+    <main id="conteudo">
+        <section class="hero" id="inicio" aria-labelledby="hero-title">
+            <div class="container hero-layout">
+                <div class="hero-copy reveal">
+                    <p class="eyebrow"><span class="eyebrow-line"></span> SUA PRÓXIMA AVENTURA COMEÇA AQUI</p>
+                    <h1 id="hero-title">Pedale.<br>Explore.<br><span>Conecte-se.</span></h1>
+                    <p class="hero-description">Novas trilhas, bons encontros e histórias que só a estrada conta.
+                        Encontre tudo isso no seu próximo pedal.</p>
+                    <div class="hero-actions">
+                        <a class="button button-primary" href="#trilhas">Explorar trilhas <span
+                                aria-hidden="true">↗</span></a>
+                        <a class="button button-quiet" href="#eventos"><span class="play-icon"
+                                aria-hidden="true">▶</span> Ver eventos</a>
+                    </div>
+                    <div class="hero-community">
+                        <div class="avatar-stack" aria-hidden="true">
+                            <span>R</span><span>M</span><span>A</span><span>+</span>
+                        </div>
+                        <p><strong>Gente de verdade,</strong><br>pedalando junto por aí.</p>
+                    </div>
+                </div>
+
+                <div class="hero-visual reveal">
+                    <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1300&q=85"
+                        alt="Ciclista pedalando em uma estrada cercada por montanhas" fetchpriority="high">
+                    <div class="hero-image-shade"></div>
+                    <div class="photo-caption"><span class="caption-dot"></span><span>ESTRADA DA SERRA<br><strong>Minas
+                                Gerais, Brasil</strong></span></div>
+                    <div class="ride-stamp" aria-label="Feito para quem vai mais longe"><span>FEITO
+                            PARA</span><strong>IR<br>MAIS<br>LONGE</strong><span class="stamp-arrow"
+                            aria-hidden="true">↗</span></div>
+                    <span class="hero-index" aria-hidden="true">01 / 04</span>
+                </div>
+            </div>
+            <div class="hero-bottom container" aria-hidden="true"><span>DESLIZE PARA DESCOBRIR</span><span
+                    class="scroll-line"></span><span>19°55' S&nbsp;&nbsp; 43°56' W</span></div>
+        </section>
+
+        <section class="trails section-pad" id="trilhas" aria-labelledby="trails-title">
+            <div class="container">
+                <div class="section-heading reveal">
+                    <div>
+                        <p class="eyebrow"><span class="eyebrow-line"></span> O CAMINHO É SEU</p>
+                        <h2 id="trails-title">Explore novas<br><span>trilhas.</span></h2>
+                    </div>
+                    <div class="section-aside">
+                        <p>Da primeira pedalada à rota que tira o fôlego. Tem um caminho esperando por você.</p><a
+                            class="text-link" href="#eventos">Ver todos os caminhos <span
+                                aria-hidden="true">↗</span></a>
+                    </div>
+                </div>
+
+                <div class="trail-grid">
+                    <article class="trail-card reveal">
+                        <a class="trail-image" href="#eventos" aria-label="Descobrir a Trilha do Cerrado">
+                            <img src="https://images.unsplash.com/photo-1471506480208-91b3a4cc78be?auto=format&fit=crop&w=900&q=80"
+                                alt="Bicicleta apoiada em uma trilha em meio à natureza" loading="lazy">
+                            <span class="trail-tag">MAIS PEDALADA</span>
+                        </a>
+                        <div class="trail-info">
+                            <p class="trail-location"><span aria-hidden="true">⌖</span> Brasília, DF</p>
+                            <h3>Trilha do Cerrado</h3>
+                            <div class="trail-meta"><span>18 km</span><span class="meta-divider"></span><span
+                                    class="difficulty moderate">Moderada</span><a class="round-link" href="#eventos"
+                                    aria-label="Ver eventos na Trilha do Cerrado">↗</a></div>
+                        </div>
+                    </article>
+                    <article class="trail-card trail-card-no-image reveal">
+                        <div class="trail-info">
+                            <p class="trail-location"><span aria-hidden="true">⌖</span> Serra da Mantiqueira, MG</p>
+                            <h3>Rota das Águas</h3>
+                            <div class="trail-meta"><span>32 km</span><span class="meta-divider"></span><span
+                                    class="difficulty advanced">Avançada</span><a class="round-link" href="#eventos"
+                                    aria-label="Ver eventos na Rota das Águas">↗</a></div>
+                        </div>
+                    </article>
+                    <article class="trail-card reveal">
+                        <a class="trail-image" href="#eventos" aria-label="Descobrir o Circuito da Mata">
+                            <img src="https://images.unsplash.com/photo-1511994298241-608e28f14fde?auto=format&fit=crop&w=900&q=80"
+                                alt="Grupo de ciclistas em um passeio por uma estrada verde" loading="lazy">
+                            <span class="trail-tag">BOM PRA COMEÇAR</span>
+                        </a>
+                        <div class="trail-info">
+                            <p class="trail-location"><span aria-hidden="true">⌖</span> Parque das Mangabeiras, BH</p>
+                            <h3>Circuito da Mata</h3>
+                            <div class="trail-meta"><span>9 km</span><span class="meta-divider"></span><span
+                                    class="difficulty easy">Tranquila</span><a class="round-link" href="#eventos"
+                                    aria-label="Ver eventos no Circuito da Mata">↗</a></div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="events section-pad" id="eventos" aria-labelledby="events-title">
+            <div class="container">
+                <div class="section-heading events-heading reveal">
+                    <div>
+                        <p class="eyebrow"><span class="eyebrow-line"></span> MARQUE NA AGENDA</p>
+                        <h2 id="events-title">Próximos<br><span>eventos.</span></h2>
+                    </div>
+                    <div class="section-aside">
+                        <p>O melhor do pedal começa antes de subir na bike: começa com quem vai junto.</p><a
+                            class="text-link" href="#encontros">Ver agenda completa <span
+                                aria-hidden="true">↗</span></a>
+                    </div>
+                </div>
+
+                <div class="event-list">
+                    <article class="event-row reveal">
+                        <div class="event-date"><span>NOV</span><strong>07</strong><span>SÁBADO</span></div>
+                        <div class="event-main"><span class="event-type">PEDAL NOTURNO</span>
+                            <h3>As luzes da cidade</h3>
+                            <p>Um giro leve pelo centro histórico, com parada para um café no caminho.</p>
+                        </div>
+                        <div class="event-detail"><span>19:30</span><span>Praça da Liberdade, BH</span></div>
+                        <button class="button button-outline attend-button" type="button"
+                            aria-pressed="false">Participar <span aria-hidden="true">↗</span></button>
+                    </article>
+                    <article class="event-row reveal">
+                        <div class="event-date"><span>NOV</span><strong>14</strong><span>SÁBADO</span></div>
+                        <div class="event-main"><span class="event-type">ENCONTRO</span>
+                            <h3>Gente que pedala</h3>
+                            <p>Conheça a galera, troque dicas e planeje sua próxima aventura.</p>
+                        </div>
+                        <div class="event-detail"><span>08:00</span><span>Parque Municipal, BH</span></div>
+                        <button class="button button-outline attend-button" type="button"
+                            aria-pressed="false">Participar <span aria-hidden="true">↗</span></button>
+                    </article>
+                    <article class="event-row reveal">
+                        <div class="event-date"><span>NOV</span><strong>22</strong><span>DOMINGO</span></div>
+                        <div class="event-main"><span class="event-type">TRILHA DE DOMINGO</span>
+                            <h3>Manhã no cerrado</h3>
+                            <p>Ar puro, estradão de terra e aquele visual para guardar na memória.</p>
+                        </div>
+                        <div class="event-detail"><span>07:00</span><span>Parque Nacional, Brasília</span></div>
+                        <button class="button button-outline attend-button" type="button"
+                            aria-pressed="false">Participar <span aria-hidden="true">↗</span></button>
+                    </article>
+                </div>
+                <p class="demo-note">Datas ilustrativas para este projeto demonstrativo.</p>
+            </div>
+        </section>
+
+        <section class="community" id="encontros" aria-labelledby="community-title">
+            <div class="community-photo" role="img" aria-label="Ciclistas reunidos para pedalar"></div>
+            <div class="community-content reveal">
+                <p class="eyebrow eyebrow-light"><span class="eyebrow-line"></span> MAIS GENTE, MAIS CAMINHO</p>
+                <h2 id="community-title">Não pedale<br>sozinho.</h2>
+                <p>Encontre pessoas que compartilham a mesma paixão. Combine o próximo pedal, descubra novos lugares e
+                    faça parte de uma comunidade que está sempre em movimento.</p>
+                <a class="button button-lime" href="#eventos">Encontrar ciclistas <span aria-hidden="true">↗</span></a>
+                <span class="community-coordinate" aria-hidden="true">TODO CAMINHO FICA MELHOR EM BOA COMPANHIA.</span>
+            </div>
+        </section>
+
+        <section class="benefits section-pad" id="sobre" aria-labelledby="benefits-title">
+            <div class="container">
+                <div class="benefits-title reveal">
+                    <p class="eyebrow"><span class="eyebrow-line"></span> O QUE MOVE A GENTE</p>
+                    <h2 id="benefits-title">Uma comunidade.<br><span>Muitas possibilidades.</span></h2>
+                </div>
+                <div class="benefit-grid">
+                    <article class="benefit-item reveal"><span class="benefit-icon" aria-hidden="true">↗</span>
+                        <h3>Trilhas</h3>
+                        <p>Novas rotas para descobrir, no seu ritmo e no seu nível.</p>
+                    </article>
+                    <article class="benefit-item reveal"><span class="benefit-icon" aria-hidden="true">◷</span>
+                        <h3>Eventos</h3>
+                        <p>Pedais e encontros para colocar na agenda e sair de casa.</p>
+                    </article>
+                    <article class="benefit-item reveal"><span class="benefit-icon" aria-hidden="true">◎</span>
+                        <h3>Encontros</h3>
+                        <p>Uma galera nova para dividir histórias e quilômetros.</p>
+                    </article>
+                    <article class="benefit-item reveal"><span class="benefit-icon" aria-hidden="true">⌖</span>
+                        <h3>Novos lugares</h3>
+                        <p>Oportunidades de ver de perto o que antes era só caminho.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-main">
+            <div class="footer-brand"><a class="brand brand-footer" href="#inicio"><span class="brand-mark"
+                        aria-hidden="true">CR</span><span class="brand-name">CODE<span>RIDERS</span></span></a>
+                <p>Feito para quem encontra<br>liberdade sobre duas rodas.</p>
+            </div>
+            <div class="footer-column">
+                <h2>EXPLORE</h2><a href="#trilhas">Trilhas</a><a href="#eventos">Eventos</a><a
+                    href="#encontros">Encontros</a>
+            </div>
+            <div class="footer-column">
+                <h2>CODE RIDERS</h2><a href="#sobre">Sobre a comunidade</a><a href="#inicio">Início</a>
+            </div>
+            <div class="footer-column">
+                <h2>POR AÍ</h2><a href="https://www.instagram.com/" target="_blank" rel="noreferrer">Instagram ↗</a><a
+                    href="https://www.youtube.com/" target="_blank" rel="noreferrer">YouTube ↗</a><a
+                    href="https://www.strava.com/" target="_blank" rel="noreferrer">Strava ↗</a>
+            </div>
+        </div>
+        <div class="container footer-bottom"><span>© 2026 Code Riders. Feito para pedalar junto.</span><a
+                href="#inicio">VOLTAR AO TOPO ↑</a></div>
+    </footer>
+</body>
+
+</html>
