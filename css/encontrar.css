@@ -344,3 +344,24 @@
         animation: none;
     }
 }
+/* NAVEGAÇÃO DA PÁGINA ENCONTRAR */
+
+.discover-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+.discover-navigation a {
+    color: #315c43;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.discover-navigation a:hover {
+    text-decoration: underline;
+}
