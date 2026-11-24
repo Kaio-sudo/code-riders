@@ -16,6 +16,7 @@ const experienceFilter = document.querySelector("#filter-experience");
 let currentUser = null;
 let riders = [];
 let sentInterests = new Set();
+let receberInteresses = new Set();
 
 // ==========================================
 // INICIALIZAÇÃO
@@ -88,6 +89,20 @@ async function loadRiders() {
     sentInterests = new Set(
         (interests || []).map(interest => interest.receiver_id)
     );
+    const { data: received, error: receivedError } = await supabase
+    .from("rider_interests")
+    .select("sender_id")
+    .eq("receiver_id", currentUser.id);
+
+if (receivedError) {
+    console.error("Erro ao buscar interesses recebidos:", receivedError);
+    showMessage("Não foi possível carregar os matches.");
+    return;
+}
+
+receberInteresses = new Set(
+    (received || []).map(interest => interest.sender_id)
+);
 
     renderRiders();
 }
@@ -112,14 +127,18 @@ function renderRiders() {
         .map(rider => createRiderCard(rider))
         .join("");
 }
-
+//função de match
+function isMatch(riderId) {
+    return sentInterests.has(riderId) &&
+           receberInteresses.has(riderId);
+}
 // ==========================================
 // CRIAR CARD
 // ==========================================
 
 function createRiderCard(rider) {
     const interested = sentInterests.has(rider.id);
-
+    const matched = isMatch(rider.id);
     const name = escapeHTML(rider.full_name || "Ciclista");
     const username = escapeHTML(rider.username || "");
     const bio = escapeHTML(rider.bio || "");
@@ -195,12 +214,19 @@ function createRiderCard(rider) {
                 </p>
 
                 <button
-                    class="rider-interest-button ${interested ? "is-interested" : ""}"
-                    data-rider-id="${rider.id}"
-                    aria-pressed="${interested}"
-                >
-                    ${interested ? "✓ Interesse enviado" : "Tenho interesse"}
-                </button>
+    class="rider-interest-button
+        ${interested ? "is-interested" : ""}
+        ${matched ? "is-match" : ""}"
+    data-rider-id="${rider.id}"
+    aria-pressed="${interested}"
+>
+    ${matched
+        ? "🤝 Deu Match!"
+        : interested
+            ? "✓ Interesse enviado"
+            : "Tenho interesse"
+    }
+</button>
 
             </div>
 
@@ -303,12 +329,24 @@ async function toggleInterest(riderId, button) {
 }
 
 function updateInterestButton(button, interested) {
-    button.classList.toggle("is-interested", interested);
-    button.setAttribute("aria-pressed", String(interested));
+    const riderId = button.dataset.riderId;
+    const matched = isMatch(riderId);
 
-    button.textContent = interested
-        ? "✓ Interesse enviado"
-        : "Tenho interesse";
+    button.classList.toggle("is-interested", interested);
+    button.classList.toggle("is-match", matched);
+
+    button.setAttribute(
+        "aria-pressed",
+        String(interested)
+    );
+
+    if (matched) {
+        button.textContent = "🤝 Deu Match!";
+    } else if (interested) {
+        button.textContent = "✓ Interesse enviado";
+    } else {
+        button.textContent = "Tenho interesse";
+    }
 }
 
 // ==========================================
