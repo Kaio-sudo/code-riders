@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encontrar ciclistas | Code Riders</title>
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/perfil.css">
+    <link rel="stylesheet" href="../css/encontrar.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <main class="discover-page">
+
+        <header class="discover-header">
+            <div>
+                <p class="eyebrow">CODE RIDERS COMMUNITY</p>
+                <h1>Encontre sua próxima<br>parceria de pedal.</h1>
+                <p class="discover-description">
+                    Conheça ciclistas, descubra novas rotas e encontre pessoas
+                    que compartilham a sua paixão.
+                </p>
+            </div>
+        </header>
+
+        <section class="discover-filters">
+
+            <div class="filter-group">
+                <label for="filter-city">Cidade</label>
+                <input type="text" id="filter-city" placeholder="Ex.: Brasília">
+            </div>
+
+            <div class="filter-group">
+                <label for="filter-modality">Modalidade</label>
+                <select id="filter-modality">
+                    <option value="">Todas as modalidades</option>
+                    <option value="MTB">MTB</option>
+                    <option value="Speed">Speed</option>
+                    <option value="Gravel">Gravel</option>
+                    <option value="Urbano">Urbano</option>
+                    <option value="BMX">BMX</option>
+                    <option value="Cicloturismo">Cicloturismo</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="filter-experience">Experiência</label>
+                <select id="filter-experience">
+                    <option value="">Todos os níveis</option>
+                    <option value="iniciante">Iniciante</option>
+                    <option value="intermediario">Intermediário</option>
+                    <option value="avancado">Avançado</option>
+                </select>
+            </div>
+
+        </section>
+
+        <section class="discover-results">
+
+            <div class="discover-results-header">
+                <h2>Ciclistas</h2>
+                <p id="results-count">Carregando ciclistas...</p>
+            </div>
+
+            <div id="riders-grid" class="riders-grid">
+                <!-- Cards inseridos pelo JavaScript -->
+            </div>
+
+        </section>
+
+    </main>
+
+    <script type="module" src="../js/matches.js"></script>
+
+</body>
+</html>
