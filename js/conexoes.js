@@ -246,9 +246,8 @@ function createMatchCard(rider) {
                     type="button"
                     class="match-chat-button"
                     data-rider-id="${rider.id}"
-                    disabled
                 >
-                    Chat em breve
+                    Conversar ->
                 </button>
 
             </div>
@@ -318,7 +317,26 @@ function escapeHTML(value) {
 
     });
 }
+// ==========================================
+// ABRIR CONVERSA
+// ==========================================
 
+matchesGrid.addEventListener("click", (event) => {
+
+    const button = event.target.closest(
+        ".match-chat-button"
+    );
+
+    if (!button) return;
+
+    const riderId = button.dataset.riderId;
+
+    if (!riderId) return;
+
+    window.location.href =
+        `./chat.html?rider=${encodeURIComponent(riderId)}`;
+
+});
 // ==========================================
 // INICIAR APLICAÇÃO
 // ==========================================
