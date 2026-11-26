@@ -898,7 +898,7 @@ async function toggleComments(postId, card, button) {
 
     }
 
-});
+
 
 // ==========================================
 // CURTIR OU DESCURTIR PUBLICAÇÃO
