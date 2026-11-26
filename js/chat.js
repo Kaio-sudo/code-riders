@@ -23,6 +23,8 @@ let riderId = null;
 let messages = [];
 let canSend = false;
 let isSending = false;
+let realtimeChannel = null;
+let realtimeSyncVersion = 0;
 
 // ==========================================
 // INICIALIZAÇÃO
@@ -82,6 +84,8 @@ async function initChat() {
 
         updateCounter();
         setStatus("");
+
+        subscribeToMessages();
 
     } catch (error) {
 
@@ -215,9 +219,26 @@ async function loadMessages() {
 
     if (error) throw error;
 
-    messages = (data || []).reverse();
+    const mergedMessages = new Map();
 
-    renderMessages();
+for (const message of data || []) {
+    mergedMessages.set(message.id, message);
+}
+
+for (const message of messages) {
+    mergedMessages.set(message.id, message);
+}
+
+messages = [...mergedMessages.values()].sort((a, b) => {
+
+    return (
+        new Date(a.created_at) -
+        new Date(b.created_at)
+    ) || a.id.localeCompare(b.id);
+
+});
+
+renderMessages();
 }
 
 // ==========================================
@@ -388,11 +409,9 @@ chatForm.addEventListener("submit", async (event) => {
         if (error) throw error;
 
         // Adiciona a mensagem ao histórico local
-        messages.push(data);
+      addMessage(data);
 
-        messageInput.value = "";
-
-        renderMessages();
+    messageInput.value = "";
 
     } catch (error) {
 
@@ -458,6 +477,140 @@ messageInput.addEventListener("keydown", (event) => {
         }
     }
 });
+
+// ==========================================
+// ADICIONAR MENSAGEM AO HISTÓRICO
+// ==========================================
+
+function addMessage(message) {
+
+    const belongsToConversation = (
+
+        message.sender_id === currentUser.id &&
+        message.receiver_id === riderId
+
+    ) || (
+
+        message.sender_id === riderId &&
+        message.receiver_id === currentUser.id
+
+    );
+
+    if (!belongsToConversation) return;
+
+    // Impede mensagens duplicadas
+    const alreadyExists = messages.some(
+        item => item.id === message.id
+    );
+
+    if (alreadyExists) return;
+
+    messages.push(message);
+
+    // Organiza as mensagens cronologicamente
+    messages.sort((a, b) => {
+
+        return (
+            new Date(a.created_at) -
+            new Date(b.created_at)
+        ) || a.id.localeCompare(b.id);
+
+    });
+
+    renderMessages();
+}
+
+// ==========================================
+// SUPABASE REALTIME
+// ==========================================
+
+function subscribeToMessages() {
+
+    if (realtimeChannel) return;
+
+    realtimeChannel = supabase
+
+        .channel(`chat-${currentUser.id}-${riderId}`)
+
+        .on(
+            "postgres_changes",
+            {
+                event: "INSERT",
+                schema: "public",
+                table: "messages",
+                filter: `receiver_id=eq.${currentUser.id}`
+            },
+            (payload) => {
+
+                addMessage(payload.new);
+
+            }
+        )
+
+        .on(
+            "postgres_changes",
+            {
+                event: "INSERT",
+                schema: "public",
+                table: "messages",
+                filter: `sender_id=eq.${currentUser.id}`
+            },
+            (payload) => {
+
+                addMessage(payload.new);
+
+            }
+        )
+
+        .subscribe(async (status) => {
+
+            const version = ++realtimeSyncVersion;
+
+            if (status === "SUBSCRIBED") {
+
+                console.log("Realtime conectado!");
+
+                try {
+
+                    await loadMessages();
+
+                    if (version !== realtimeSyncVersion) return;
+
+                    chatUserStatus.textContent =
+                        canSend
+                            ? "🤝 Conexão Code Riders"
+                            : "Conexão encerrada";
+
+                } catch (error) {
+
+                    console.error(
+                        "Erro ao sincronizar mensagens:",
+                        error
+                    );
+
+                    if (version !== realtimeSyncVersion) return;
+
+                    chatUserStatus.textContent =
+                        "Erro de sincronização";
+                }
+            }
+
+            if (
+                status === "CHANNEL_ERROR" ||
+                status === "TIMED_OUT" ||
+                status === "CLOSED"
+            ) {
+
+                console.warn(
+                    "Status do Realtime:",
+                    status
+                );
+
+                chatUserStatus.textContent =
+                    "Conexão em tempo real indisponível";
+            }
+        });
+}
 
 // ==========================================
 // FUNÇÕES AUXILIARES
@@ -531,7 +684,29 @@ function formatDate(value) {
 
     return date.toLocaleDateString("pt-BR");
 }
+// ==========================================
+// ENCERRAR CONEXÃO REALTIME
+// ==========================================
 
+window.addEventListener("pagehide", () => {
+
+    if (realtimeChannel) {
+
+        supabase.removeChannel(realtimeChannel);
+
+        realtimeChannel = null;
+
+        realtimeSyncVersion++;
+    }
+});
+
+window.addEventListener("pageshow", (event) => {
+
+    if (event.persisted && currentUser && riderId) {
+
+        subscribeToMessages();
+    }
+});
 // ==========================================
 // INICIAR APLICAÇÃO
 // ==========================================
