@@ -149,7 +149,24 @@
                             required
                             disabled
                         ></textarea>
+                        <div id="image-preview-container"
+                            class="image-preview-container"
+                            hidden>
 
+                            <img
+                                id="image-preview"
+                                alt="Prévia da imagem selecionada"
+                            >
+
+                            <button
+                                type="button"
+                                id="remove-image-button"
+                                class="remove-image-button"
+                            >
+                                ✕ Remover foto
+                            </button>
+
+                        </div>
                         <div class="composer-counter">
 
                             <span id="post-counter">
@@ -208,9 +225,26 @@
                             Feed da comunidade
                         </h2>
 
+                        <div class="feed-indicators">
+
+                        <span id="realtime-status"
+                            class="realtime-status"
+                            role="status">
+
+                            <span class="realtime-dot"
+                                aria-hidden="true"></span>
+
+                            <span id="realtime-label">
+                                Conectando...
+                            </span>
+
+                        </span>
+
                         <span class="feed-order">
                             Mais recentes
                         </span>
+
+                    </div>
 
                     </header>
 

@@ -5,6 +5,34 @@ import { supabase } from "./supabase.js";
 // ==========================================
 
 // ELEMENTOS HTML
+const realtimeStatus = document.querySelector(
+    "#realtime-status"
+);
+
+const realtimeLabel = document.querySelector(
+    "#realtime-label"
+);
+// ELEMENTOS DE UPLOAD
+
+const addImageButton = document.querySelector(
+    "#add-image-button"
+);
+
+const imageInput = document.querySelector(
+    "#post-image-input"
+);
+
+const imagePreview = document.querySelector(
+    "#image-preview"
+);
+
+const imagePreviewContainer = document.querySelector(
+    "#image-preview-container"
+);
+
+const removeImageButton = document.querySelector(
+    "#remove-image-button"
+);
 
 const postForm = document.querySelector("#post-form");
 const postContent = document.querySelector("#post-content");
@@ -27,6 +55,30 @@ const myLikesCount = document.querySelector("#my-likes-count");
 const myMatchesCount = document.querySelector("#my-matches-count");
 
 // ESTADO DA APLICAÇÃO
+let communityChannel = null;
+
+let refreshTimer = null;
+
+let isRefreshing = false;
+
+let refreshPending = false;
+
+let fallbackTimer = null;
+let selectedImage = null;
+
+let previewUrl = null;
+
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+
+const ALLOWED_IMAGE_TYPES = {
+
+    "image/jpeg": "jpg",
+
+    "image/png": "png",
+
+    "image/webp": "webp"
+
+};
 
 let currentUser = null;
 let currentProfile = null;
@@ -37,6 +89,100 @@ const pendingLikes = new Set();
 
 let isPublishing = false;
 let isReady = false;
+
+// ==========================================
+// SELECIONAR IMAGEM
+// ==========================================
+
+addImageButton.addEventListener("click", () => {
+
+    if (!isReady || isPublishing) return;
+
+    imageInput.click();
+
+});
+
+imageInput.addEventListener("change", () => {
+
+    if (!isReady || isPublishing) return;
+
+    const file = imageInput.files[0];
+
+    if (!file) return;
+
+    if (!Object.hasOwn(ALLOWED_IMAGE_TYPES, file.type)) {
+
+        setStatus(
+            composerStatus,
+            "Selecione uma imagem JPG, PNG ou WebP.",
+            true
+        );
+
+        imageInput.value = "";
+
+        return;
+
+    }
+
+    if (file.size > MAX_IMAGE_SIZE) {
+
+        setStatus(
+            composerStatus,
+            "A imagem deve ter no máximo 5 MB.",
+            true
+        );
+
+        imageInput.value = "";
+
+        return;
+
+    }
+
+    if (previewUrl) {
+
+        URL.revokeObjectURL(previewUrl);
+
+    }
+
+    selectedImage = file;
+
+    previewUrl = URL.createObjectURL(file);
+
+    imagePreview.src = previewUrl;
+
+    imagePreviewContainer.hidden = false;
+
+    setStatus(composerStatus, "");
+
+});
+
+removeImageButton.addEventListener("click", () => {
+
+    if (isPublishing) return;
+
+    clearSelectedImage();
+
+});
+
+function clearSelectedImage() {
+
+    if (previewUrl) {
+
+        URL.revokeObjectURL(previewUrl);
+
+    }
+
+    selectedImage = null;
+
+    previewUrl = null;
+
+    imageInput.value = "";
+
+    imagePreview.removeAttribute("src");
+
+    imagePreviewContainer.hidden = true;
+
+}
 
 // ==========================================
 // INICIALIZAR COMUNIDADE
@@ -67,9 +213,12 @@ async function initCommunity() {
 
         postContent.disabled = false;
 
+        addImageButton.disabled = false;
+
         updatePostCounter();
 
         await refreshStats();
+        subscribeToCommunity();
 
     } catch (error) {
 
@@ -84,7 +233,9 @@ async function initCommunity() {
             true
         );
 
+        
     }
+    
 }
 
 // ==========================================
@@ -180,6 +331,7 @@ async function loadPosts() {
                 id,
                 author_id,
                 content,
+                image_path,
                 created_at,
                 updated_at,
 
@@ -195,6 +347,7 @@ async function loadPosts() {
                 post_likes(count),
 
                 post_comments(count)
+                
             `)
             .order("created_at", {
                 ascending: false
@@ -206,12 +359,39 @@ async function loadPosts() {
 
         if (error) throw error;
 
-        posts = data || [];
-            await loadMyLikes(
-                posts.map(post => post.id)
-            );
+       const nextPosts = data || [];
 
-        renderPosts();
+if (isRefreshing && hasActiveInteraction()) {
+
+    refreshPending = true;
+
+    setStatus(feedStatus, "");
+
+    return;
+
+}
+
+const previousLikes = likedPostIds;
+
+await loadMyLikes(
+    nextPosts.map(post => post.id)
+);
+
+if (isRefreshing && hasActiveInteraction()) {
+
+    likedPostIds = previousLikes;
+
+    refreshPending = true;
+
+    setStatus(feedStatus, "");
+
+    return;
+
+}
+
+posts = nextPosts;
+
+renderPosts();
 
         
 
@@ -385,6 +565,7 @@ commentButton.dataset.action = "comments";
 
 commentButton.textContent =
     `💬 ${commentsCount} comentários`;
+commentButton.disabled = false;
 
 commentButton.setAttribute("aria-expanded", "false");
 
@@ -430,12 +611,37 @@ commentsSection.innerHTML = `
        role="status"></p>
 `;
 
-card.append(
-    header,
-    content,
-    actions,
-    commentsSection
-);
+card.append(header, content);
+
+// IMAGEM DA PUBLICAÇÃO
+
+if (post.image_path) {
+
+    const { data } = supabase.storage
+        .from("post-images")
+        .getPublicUrl(post.image_path);
+
+    const image = document.createElement("img");
+
+    image.className = "post-image";
+
+    image.src = data.publicUrl;
+
+    image.alt = "Foto compartilhada pelo ciclista";
+
+    image.loading = "lazy";
+
+    image.addEventListener("error", () => {
+
+        image.remove();
+
+    });
+
+    card.appendChild(image);
+
+}
+
+card.append(actions, commentsSection);
 
 return card;
 
@@ -503,8 +709,9 @@ function renderEmptyFeed() {
 
 }
 
+
 // ==========================================
-// CRIAR PUBLICAÇÃO
+// PUBLICAR TEXTO E IMAGEM
 // ==========================================
 
 postForm.addEventListener("submit", async (event) => {
@@ -519,14 +726,40 @@ postForm.addEventListener("submit", async (event) => {
 
     isPublishing = true;
 
-    publishButton.disabled = true;
-    postContent.disabled = true;
+    publishButton.disabled = false;
+    postContent.disabled = false;
+    addImageButton.disabled = false;
+    removeImageButton.disabled = false;
 
     publishButton.textContent = "Publicando...";
 
     setStatus(composerStatus, "");
 
+    let imagePath = null;
+
+    let publicationSaved = false;
+
+    let insertAttempted = false;
+
     try {
+
+        // ENVIAR IMAGEM
+
+        if (selectedImage) {
+
+            publishButton.textContent = "Enviando foto...";
+
+            imagePath = await uploadPostImage(
+                selectedImage
+            );
+
+        }
+
+        publishButton.textContent = "Publicando...";
+
+        // SALVAR PUBLICAÇÃO
+
+        insertAttempted = true;
 
         const { error } = await supabase
             .from("posts")
@@ -534,47 +767,75 @@ postForm.addEventListener("submit", async (event) => {
 
                 author_id: currentUser.id,
 
-                content: content
+                content: content,
+
+                image_path: imagePath
 
             });
 
-        if (error) throw error;
+        if (error) {
+
+            // Erro explícito do banco: publicação rejeitada
+
+            if (/^[0-9A-Z]{5}$/.test(error.code || "")) {
+
+                insertAttempted = false;
+
+            }
+
+            throw error;
+
+        }
+
+        publicationSaved = true;
 
         postContent.value = "";
+
+        clearSelectedImage();
 
         setStatus(
             composerStatus,
             "Publicação realizada com sucesso!"
         );
 
-        try {
-
-            await loadPosts();
-
-        } catch (refreshError) {
-
-            console.error(refreshError);
-
-            setStatus(
-                composerStatus,
-                "Publicação salva. Atualize a página para visualizar."
-            );
-
-        }
+        await loadPosts();
 
         await refreshStats();
 
     } catch (error) {
 
-        console.error(
-            "Erro ao publicar:",
-            error
-        );
+        console.error(error);
+
+        // REMOVER IMAGEM SE A PUBLICAÇÃO
+        // DEFINITIVAMENTE NÃO FOI SALVA
+
+        if (imagePath && !publicationSaved && !insertAttempted) {
+
+            try {
+
+                await removeStoredImage(imagePath);
+
+            } catch (storageError) {
+
+                console.error(
+                    "Erro ao limpar imagem:",
+                    storageError
+                );
+
+            }
+
+        }
 
         setStatus(
+
             composerStatus,
-            "Não foi possível criar a publicação.",
+
+            publicationSaved
+                ? "Publicação salva. Atualize a página."
+                : "Não foi possível confirmar a publicação. Confira o feed antes de tentar novamente.",
+
             true
+
         );
 
     } finally {
@@ -582,6 +843,8 @@ postForm.addEventListener("submit", async (event) => {
         isPublishing = false;
 
         postContent.disabled = !isReady;
+        addImageButton.disabled = !isReady;
+        removeImageButton.disabled = false;
 
         publishButton.textContent = "Publicar →";
 
@@ -590,7 +853,6 @@ postForm.addEventListener("submit", async (event) => {
     }
 
 });
-
 // ==========================================
 // CONTADOR DE CARACTERES
 // ==========================================
@@ -1058,6 +1320,33 @@ async function deletePost(postId) {
         item => item.id === postId
     );
 
+
+    // EXCLUIR IMAGEM DO STORAGE
+
+if (post.image_path) {
+
+    try {
+
+        await removeStoredImage(
+            post.image_path
+        );
+
+    } catch (storageError) {
+
+        console.error(
+            "Publicação excluída, mas a imagem não foi removida:",
+            storageError
+        );
+
+        setStatus(
+            composerStatus,
+            "A publicação foi excluída, mas a foto precisa ser removida do Storage.",
+            true
+        );
+
+    }
+
+}
     if (!post) return;
 
     if (post.author_id !== currentUser.id) return;
@@ -1519,6 +1808,224 @@ async function refreshCommentCount(postId, card) {
 
 }
 // ==========================================
+// CONECTAR SUPABASE REALTIME
+// ==========================================
+
+function subscribeToCommunity() {
+
+    if (communityChannel) return;
+
+    updateRealtimeStatus("connecting");
+
+    communityChannel = supabase
+
+        .channel("code-riders-community")
+
+        // PUBLICAÇÕES
+
+        .on(
+
+            "postgres_changes",
+
+            {
+
+                event: "*",
+
+                schema: "public",
+
+                table: "posts"
+
+            },
+
+            () => {
+
+                scheduleFeedRefresh();
+
+            }
+
+        )
+
+        // CURTIDAS
+
+        .on(
+
+            "postgres_changes",
+
+            {
+
+                event: "*",
+
+                schema: "public",
+
+                table: "post_likes"
+
+            },
+
+            () => {
+
+                scheduleFeedRefresh();
+
+            }
+
+        )
+
+        // COMENTÁRIOS
+
+        .on(
+
+            "postgres_changes",
+
+            {
+
+                event: "*",
+
+                schema: "public",
+
+                table: "post_comments"
+
+            },
+
+            () => {
+
+                scheduleFeedRefresh();
+
+            }
+
+        )
+
+        .subscribe(status => {
+
+            if (status === "SUBSCRIBED") {
+
+                console.log(
+                    "Comunidade Realtime conectada!"
+                );
+
+                updateRealtimeStatus("online");
+
+                scheduleFeedRefresh();
+
+            }
+
+            if (
+
+                status === "CHANNEL_ERROR" ||
+
+                status === "TIMED_OUT" ||
+
+                status === "CLOSED"
+
+            ) {
+
+                updateRealtimeStatus("offline");
+
+            }
+
+        });
+
+    // SINCRONIZAÇÃO DE SEGURANÇA
+
+    clearInterval(fallbackTimer);
+
+    fallbackTimer = setInterval(() => {
+
+        if (!document.hidden) {
+
+            scheduleFeedRefresh();
+
+        }
+
+    }, 30000);
+
+}
+
+// ==========================================
+// STATUS DA CONEXÃO
+// ==========================================
+
+function updateRealtimeStatus(status) {
+
+    realtimeStatus.classList.remove(
+        "is-online",
+        "is-offline"
+    );
+
+    if (status === "online") {
+
+        realtimeStatus.classList.add(
+            "is-online"
+        );
+
+        realtimeLabel.textContent = "Ao vivo";
+
+        return;
+
+    }
+
+    if (status === "offline") {
+
+        realtimeStatus.classList.add(
+            "is-offline"
+        );
+
+        realtimeLabel.textContent =
+            "Reconectando...";
+
+        return;
+
+    }
+
+    realtimeLabel.textContent =
+        "Conectando...";
+
+}
+// ==========================================
+// UPLOAD PARA SUPABASE STORAGE
+// ==========================================
+
+async function uploadPostImage(file) {
+
+    if (!file) return null;
+
+    const extension =
+        ALLOWED_IMAGE_TYPES[file.type];
+
+    const fileName =
+        `${crypto.randomUUID()}.${extension}`;
+
+    const filePath =
+        `${currentUser.id}/${fileName}`;
+
+    const { data, error } = await supabase.storage
+        .from("post-images")
+        .upload(filePath, file, {
+
+            contentType: file.type,
+
+            cacheControl: "3600",
+
+            upsert: false
+
+        });
+
+    if (error) throw error;
+
+    return data.path;
+
+}
+async function removeStoredImage(path) {
+
+    if (!path) return;
+
+    const { error } = await supabase.storage
+        .from("post-images")
+        .remove([path]);
+
+    if (error) throw error;
+
+}
+
+// ==========================================
 // EXCLUIR COMENTÁRIO
 // ==========================================
 
@@ -1570,9 +2077,215 @@ async function deleteComment(postId, commentId, card) {
     }
 
 }
+// ==========================================
+// VERIFICAR INTERAÇÕES EM ANDAMENTO
+// ==========================================
+
+function hasActiveInteraction() {
+
+    if (isPublishing) return true;
+
+    if (pendingLikes.size > 0) return true;
+
+    const activeElement = document.activeElement;
+
+    if (activeElement?.matches(".comment-input")) {
+
+        return true;
+
+    }
+
+    const inputs = postsFeed.querySelectorAll(
+        ".comment-input"
+    );
+
+    for (const input of inputs) {
+
+        if (input.value.trim()) {
+
+            return true;
+
+        }
+
+    }
+
+    const pendingAction = postsFeed.querySelector(
+        ".comment-submit:disabled, " +
+        ".comment-delete-button:disabled, " +
+        ".post-delete-button:disabled"
+    );
+
+    return Boolean(pendingAction);
+
+}
+
+// ==========================================
+// AGENDAR ATUALIZAÇÃO DO FEED
+// ==========================================
+
+function scheduleFeedRefresh() {
+
+    refreshPending = true;
+
+    clearTimeout(refreshTimer);
+
+    refreshTimer = setTimeout(
+        refreshCommunityFeed,
+        700
+    );
+
+}
+
+// ==========================================
+// ATUALIZAR COMUNIDADE
+// ==========================================
+
+async function refreshCommunityFeed() {
+
+    if (!isReady || !refreshPending) return;
+
+    if (isRefreshing || hasActiveInteraction()) {
+
+        refreshTimer = setTimeout(
+            refreshCommunityFeed,
+            1500
+        );
+
+        return;
+
+    }
+
+    isRefreshing = true;
+
+    refreshPending = false;
+
+    // GUARDAR COMENTÁRIOS ABERTOS
+
+    const openedPostIds = [
+
+        ...postsFeed.querySelectorAll(
+            ".post-comments:not([hidden])"
+        )
+
+    ].map(section => {
+
+        return section.closest(
+            ".post-card"
+        ).dataset.postId;
+
+    });
+
+    try {
+
+        await loadPosts();
+        if (hasActiveInteraction()) {
+
+    refreshPending = true;
+
+    return;
+
+}
+
+        // REABRIR COMENTÁRIOS
+
+        for (const postId of openedPostIds) {
+
+            const card = postsFeed.querySelector(
+                `.post-card[data-post-id="${postId}"]`
+            );
+
+            if (!card) continue;
+
+            const button = card.querySelector(
+                '[data-action="comments"]'
+            );
+
+            await toggleComments(
+                postId,
+                card,
+                button
+            );
+
+        }
+
+        await refreshStats();
+
+    } catch (error) {
+
+        console.error(
+            "Erro ao sincronizar comunidade:",
+            error
+        );
+
+        refreshPending = true;
+
+    } finally {
+
+        isRefreshing = false;
+
+        if (refreshPending) {
+
+            clearTimeout(refreshTimer);
+
+            refreshTimer = setTimeout(
+                refreshCommunityFeed,
+                1500
+            );
+
+        }
+
+    }
+
+}
 
 // ==========================================
 // INICIAR APLICAÇÃO
 // ==========================================
+// ==========================================
+// ENCERRAR CONEXÃO AO SAIR DA PÁGINA
+// ==========================================
 
+window.addEventListener("pagehide", () => {
+
+    clearTimeout(refreshTimer);
+
+    clearInterval(fallbackTimer);
+
+    refreshPending = false;
+
+    if (communityChannel) {
+
+        const channel = communityChannel;
+
+        communityChannel = null;
+
+        supabase.removeChannel(channel);
+
+    }
+
+});
+
+// RESTAURAR CONEXÃO AO VOLTAR
+
+window.addEventListener("pageshow", (event) => {
+
+    if (event.persisted && isReady) {
+
+        subscribeToCommunity();
+
+    }
+
+});
+
+// SINCRONIZAR AO VOLTAR PARA A ABA
+
+document.addEventListener("visibilitychange", () => {
+
+    if (!document.hidden && isReady) {
+
+        scheduleFeedRefresh();
+
+    }
+
+});
 initCommunity();
