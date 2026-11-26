@@ -639,7 +639,7 @@ postsFeed.addEventListener("click", async (event) => {
 
     const action = button.dataset.action;
 
-    // CURTIR OU DESCURTIR
+    // CURTIDAS
 
     if (action === "like") {
 
@@ -648,6 +648,64 @@ postsFeed.addEventListener("click", async (event) => {
         return;
 
     }
+
+    // ABRIR COMENTÁRIOS
+
+    if (action === "comments") {
+
+        await toggleComments(
+            postId,
+            card,
+            button
+        );
+
+        return;
+
+    }
+
+    // EXCLUIR COMENTÁRIO
+
+    if (action === "delete-comment") {
+
+        button.disabled = true;
+
+        try {
+
+            await deleteComment(
+                postId,
+                button.dataset.commentId,
+                card
+            );
+
+        } finally {
+
+            button.disabled = false;
+
+        }
+
+        return;
+
+    }
+
+    // EXCLUIR PUBLICAÇÃO
+
+    if (action === "delete") {
+
+        button.disabled = true;
+
+        try {
+
+            await deletePost(postId);
+
+        } finally {
+
+            button.disabled = false;
+
+        }
+
+    }
+
+});
 
 // ==========================================
 // CARREGAR COMENTÁRIOS
