@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f6f1">
+
+    <title>Meu perfil | Code Riders</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/perfil.css">
+
+    <script type="module" src="../js/profile.js"></script>
+</head>
+
+<body>
+
+    <header class="profile-header">
+        <a href="../index.html" class="brand">
+            <span class="brand-mark">CR</span>
+            <span class="brand-name">CODE<span>RIDERS</span></span>
+        </a>
+
+        <nav>
+            <a href="../index.html">Voltar ao início</a>
+            <a href="./comunidade.html"> Comunidade </a>
+            <button id="logout-button" type="button">Sair da conta ↗</button>
+        </nav>
+    </header>
+
+    <main class="profile-main">
+
+        <section class="profile-heading">
+            <p class="eyebrow">SUA JORNADA, SEU PERFIL</p>
+            <h1>Quem é você <span>sobre duas rodas?</span></h1>
+            <p>
+                Conte um pouco sobre você e ajude outros ciclistas
+                a encontrar alguém para compartilhar o próximo pedal.
+            </p>
+        </section>
+
+        <section class="profile-card">
+
+            <div class="profile-card-heading">
+                <div>
+                    <span class="section-number">01 / IDENTIDADE</span>
+                    <h2>Suas informações</h2>
+                </div>
+            </div>
+
+            <form id="profile-form">
+
+                <div class="profile-avatar-area">
+                    <div class="profile-avatar" id="avatar-preview">
+                        CR
+                    </div>
+
+                    <div>
+                        <strong>Sua foto de perfil</strong>
+                        <p>A personalização da foto estará disponível em breve.</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group full-width">
+                        <label for="full-name">Nome completo</label>
+                        <input
+                            type="text"
+                            id="full-name"
+                            maxlength="100"
+                            placeholder="Seu nome"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Nome de usuário</label>
+                        <input
+                            type="text"
+                            id="username"
+                            maxlength="30"
+                            placeholder="ex: ana_ciclista"
+                            autocomplete="username"
+                        >
+                        <small>Use letras minúsculas, números e _.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">E-mail da conta</label>
+                        <input
+                            type="email"
+                            id="email"
+                            disabled
+                        >
+                        <small>O e-mail não pode ser alterado aqui.</small>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="bio">Sobre você</label>
+                        <textarea
+                            id="bio"
+                            maxlength="300"
+                            rows="4"
+                            placeholder="Conte um pouco sobre sua história com o ciclismo..."
+                        ></textarea>
+                        <small>Máximo de 300 caracteres.</small>
+                    </div>
+
+                </div>
+
+                <div class="profile-divider"></div>
+
+                <div class="profile-card-heading">
+                    <div>
+                        <span class="section-number">02 / LOCALIZAÇÃO</span>
+                        <h2>Onde você pedala?</h2>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="city">Cidade</label>
+                        <input
+                            type="text"
+                            id="city"
+                            maxlength="100"
+                            placeholder="Sua cidade"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state">Estado</label>
+                        <input
+                            type="text"
+                            id="state"
+                            maxlength="100"
+                            placeholder="Ex: Distrito Federal"
+                        >
+                    </div>
+
+                </div>
+
+                <div class="profile-divider"></div>
+
+                <div class="profile-card-heading">
+                    <div>
+                        <span class="section-number">03 / SEU ESTILO</span>
+                        <h2>Modalidades</h2>
+                        <p>Selecione todas as modalidades que pratica ou deseja praticar.</p>
+                    </div>
+                </div>
+
+                <div class="modality-grid">
+
+                    <label class="modality-option">
+                        <input type="checkbox" name="modality" value="MTB">
+                        <span>MTB</span>
+                    </label>
+
+                    <label class="modality-option">
+                        <input type="checkbox" name="modality" value="Speed">
+                        <span>Speed</span>
+                    </label>
+
+                    <label class="modality-option">
+                        <input type="checkbox" name="modality" value="Gravel">
+                        <span>Gravel</span>
+                    </label>
+
+                    <label class="modality-option">
+                        <input type="checkbox" name="modality" value="Urbano">
+                        <span>Urbano</span>
+                    </label>
+
+                    <label class="modality-option">
+                        <input type="checkbox" name="modality" value="BMX">
+                        <span>BMX</span>
+                    </label>
+
+                    <label class="modality-option">
+                        <input type="checkbox" name="modality" value="Cicloturismo">
+                        <span>Cicloturismo</span>
+                    </label>
+
+                </div>
+
+                <div class="profile-divider"></div>
+
+                <div class="profile-card-heading">
+                    <div>
+                        <span class="section-number">04 / EXPERIÊNCIA</span>
+                        <h2>Qual é seu nível?</h2>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="experience">Nível de experiência</label>
+
+                    <select id="experience">
+                        <option value="">Selecione seu nível</option>
+                        <option value="iniciante">Iniciante</option>
+                        <option value="intermediario">Intermediário</option>
+                        <option value="avancado">Avançado</option>
+                    </select>
+                </div>
+
+                <div class="profile-divider"></div>
+
+                <div class="privacy-setting">
+                    <div>
+                        <strong>Permitir que me encontrem</strong>
+                        <p>
+                            Seu perfil poderá aparecer nas buscas de outros
+                            ciclistas autenticados.
+                        </p>
+                    </div>
+
+                    <label class="switch">
+                        <input type="checkbox" id="discoverable">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+
+                <p
+                    id="profile-message"
+                    class="profile-message"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
+                <div class="profile-actions">
+                    <button type="submit" id="save-profile">
+                        <span>Salvar meu perfil</span>
+                        <span aria-hidden="true">↗</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </section>
+
+        <p class="profile-footer">
+            CODE RIDERS — PEDALE. EXPLORE. CONECTE-SE.
+        </p>
+
+    </main>
+
+</body>
+</html>

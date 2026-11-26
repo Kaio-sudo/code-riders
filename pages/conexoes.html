@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Meus Matches | Code Riders</title>
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/conexoes.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <main class="connections-page">
+
+        <nav class="connections-navigation">
+            <a href="./encontrar.html">
+                ← Encontrar ciclistas
+            </a>
+
+            <a href="./perfil.html">
+                Meu perfil
+            </a>
+            <a href="./comunidade.html"> Comunidade </a>            
+        </nav>
+
+        <header class="connections-header">
+
+            <p class="eyebrow">
+                CODE RIDERS COMMUNITY
+            </p>
+
+            <h1>Meus Matches.</h1>
+
+            <p class="connections-description">
+                Novas conexões. Novos caminhos.
+                Novas aventuras.
+            </p>
+
+        </header>
+
+        <section class="connections-stats">
+
+            <div class="connection-stat">
+                <span id="matches-count">—</span>
+                <p>Conexões realizadas</p>
+            </div>
+
+        </section>
+
+        <section class="connections-results">
+
+            <div class="connections-results-header">
+
+                <h2>Minhas conexões</h2>
+
+                <a href="./encontrar.html">
+                    Encontrar mais ciclistas →
+                </a>
+
+            </div>
+
+            <div
+                id="matches-status"
+                role="status"
+                aria-live="polite"
+            >
+                Carregando suas conexões...
+            </div>
+
+            <div id="matches-grid" class="matches-grid">
+                <!-- Matches inseridos pelo JavaScript -->
+            </div>
+
+        </section>
+
+    </main>
+
+    <script type="module" src="../js/conexoes.js"></script>
+
+</body>
+</html>

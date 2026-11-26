@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Chat | Code Riders</title>
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/chat.css">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+
+    <main class="chat-page">
+
+        <!-- NAVEGAÇÃO -->
+
+        <nav class="chat-navigation">
+
+            <a href="./conexoes.html">
+                ← Meus Matches
+            </a>
+
+            <a href="./perfil.html">
+                Meu perfil
+            </a>
+
+        </nav>
+
+        <!-- TÍTULO -->
+
+        <header class="chat-page-header">
+
+            <p class="eyebrow">
+                CODE RIDERS COMMUNITY
+            </p>
+
+            <h1>Conversa.</h1>
+
+        </header>
+
+        <!-- CONTAINER DO CHAT -->
+
+        <section class="chat-container">
+
+            <!-- PERFIL DO CICLISTA -->
+
+            <header class="chat-header">
+
+                <div
+                    id="chat-avatar"
+                    class="chat-avatar"
+                >
+                    CR
+                </div>
+
+                <div class="chat-user-info">
+
+                    <h2 id="chat-user-name">
+                        Carregando...
+                    </h2>
+
+                    <p id="chat-user-status">
+                        Conexão Code Riders
+                    </p>
+
+                </div>
+
+            </header>
+
+            <!-- STATUS DO CHAT -->
+
+            <div
+                id="chat-status"
+                class="chat-status"
+                role="status"
+                aria-live="polite"
+            >
+                Carregando conversa...
+            </div>
+
+            <!-- HISTÓRICO DE MENSAGENS -->
+
+            <div
+                id="chat-messages"
+                class="chat-messages"
+                role="log"
+                aria-label="Histórico de mensagens"
+                aria-live="polite"
+            >
+
+                <!-- Mensagens inseridas pelo JavaScript -->
+
+            </div>
+
+            <!-- FORMULÁRIO DE ENVIO -->
+
+            <form
+                id="chat-form"
+                class="chat-form"
+            >
+
+                <div class="chat-input-wrapper">
+
+                    <textarea
+                        id="message-input"
+                        placeholder="Digite sua mensagem..."
+                        aria-label="Digite sua mensagem"
+                        maxlength="2000"
+                        rows="1"
+                        required
+                        disabled
+                    ></textarea>
+
+                    <span
+                        id="message-counter"
+                        class="message-counter"
+                    >
+                        0/2000
+                    </span>
+
+                </div>
+
+                <button
+                    type="submit"
+                    id="send-button"
+                    class="chat-send-button"
+                    aria-label="Enviar mensagem"
+                    disabled
+                >
+                    Enviar →
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <script
+        type="module"
+        src="../js/chat.js"
+    ></script>
+
+</body>
+</html>
