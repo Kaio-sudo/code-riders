@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#f5f6f1">
+
+    <title>Entrar | Code Riders</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/auth.css">
+
+    <script type="module" src="../js/auth.js"></script>
+</head>
+
+<body>
+
+    <section class="auth-visual">
+
+        <a href="../index.html" class="auth-brand">
+            <span class="brand-mark">CR</span>
+
+            <span class="brand-name">
+                CODE
+                <span>RIDERS</span>
+            </span>
+        </a>
+
+        <div class="auth-visual-copy">
+
+            <span class="auth-eyebrow">Bom ter você de volta</span>
+
+            <h1>
+                A estrada
+                <span>continua.</span>
+            </h1>
+
+            <p>
+                Entre na sua conta, encontre sua comunidade
+                e continue explorando novos caminhos.
+            </p>
+
+        </div>
+
+        <span class="auth-visual-footer">
+            CODE RIDERS — PEDALE. EXPLORE. CONECTE-SE.
+        </span>
+
+    </section>
+
+
+    <main class="auth-content">
+
+        <div class="auth-card">
+
+            <a href="../index.html" class="auth-back">
+                ← Voltar para o início
+            </a>
+
+            <h2>Bem-vindo de volta.</h2>
+
+            <p class="auth-description">
+                Informe seus dados para acessar sua conta
+                Code Riders.
+            </p>
+
+
+            <form class="auth-form" id="login-form">
+
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="seuemail@exemplo.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Digite sua senha"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+
+                <p
+                    class="auth-message"
+                    id="auth-message"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
+
+                <button class="auth-submit" type="submit">
+                    <span>Entrar na minha conta</span>
+                    <span aria-hidden="true">↗</span>
+                </button>
+
+            </form>
+
+
+            <p class="auth-switch">
+                Ainda não tem uma conta?
+                <a href="cadastro.html">Criar conta</a>
+            </p>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

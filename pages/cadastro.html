@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#f5f6f1">
+
+    <title>Criar conta | Code Riders</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/auth.css">
+
+    <script type="module" src="../js/auth.js"></script>
+</head>
+
+<body>
+
+    <section class="auth-visual">
+
+        <a href="../index.html" class="auth-brand">
+            <span class="brand-mark">CR</span>
+
+            <span class="brand-name">
+                CODE
+                <span>RIDERS</span>
+            </span>
+        </a>
+
+        <div class="auth-visual-copy">
+
+            <span class="auth-eyebrow">Faça parte do movimento</span>
+
+            <h1>
+                Seu próximo
+                <span>pedal começa aqui.</span>
+            </h1>
+
+            <p>
+                Conheça ciclistas, descubra novas trilhas e encontre
+                pessoas para compartilhar cada quilômetro.
+            </p>
+
+        </div>
+
+        <span class="auth-visual-footer">
+            CODE RIDERS — PEDALE. EXPLORE. CONECTE-SE.
+        </span>
+
+    </section>
+
+
+    <main class="auth-content">
+
+        <div class="auth-card">
+
+            <a href="../index.html" class="auth-back">
+                ← Voltar para o início
+            </a>
+
+            <h2>Crie sua conta.</h2>
+
+            <p class="auth-description">
+                Entre para a comunidade Code Riders e comece
+                a encontrar sua próxima companhia de pedal.
+            </p>
+
+
+            <form class="auth-form" id="signup-form">
+
+                <div class="form-group">
+                    <label for="full-name">Nome completo</label>
+
+                    <input
+                        type="text"
+                        id="full-name"
+                        name="full-name"
+                        placeholder="Como podemos te chamar?"
+                        autocomplete="name"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="seuemail@exemplo.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Mínimo de 6 caracteres"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirmar senha</label>
+
+                    <input
+                        type="password"
+                        id="confirm-password"
+                        name="confirm-password"
+                        placeholder="Digite sua senha novamente"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                    >
+                </div>
+
+
+                <p
+                    class="auth-message"
+                    id="auth-message"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
+
+                <button class="auth-submit" type="submit">
+                    <span>Criar minha conta</span>
+                    <span aria-hidden="true">↗</span>
+                </button>
+
+            </form>
+
+
+            <p class="auth-switch">
+                Já tem uma conta?
+                <a href="login.html">Entrar</a>
+            </p>
+
+        </div>
+
+    </main>
+
+</body>
+</html>
