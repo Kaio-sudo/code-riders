@@ -2269,4 +2269,4 @@ document.addEventListener("visibilitychange", () => {
     }
 
 });
-initCommunity();
+initCommunity(); 
