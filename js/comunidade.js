@@ -233,7 +233,6 @@ async function initCommunity() {
             true
         );
 
-        
     }
     
 }
@@ -393,8 +392,6 @@ posts = nextPosts;
 
 renderPosts();
 
-        
-
         setStatus(feedStatus, "");
 
     } catch (error) {
@@ -415,25 +412,31 @@ renderPosts();
 // ==========================================
 
 function renderPosts() {
-
-    postsFeed.replaceChildren();
-
-    if (posts.length === 0) {
-
+    if (!posts.length) {
         renderEmptyFeed();
-
         return;
-
     }
-
-    posts.forEach(post => {
-
-        postsFeed.appendChild(
-            createPostCard(post)
-        );
-
-    });
-
+    const existing = new Map([...postsFeed.querySelectorAll('.post-card')]
+        .map(card => [card.dataset.postId, card]));
+    postsFeed.querySelector('.feed-empty')?.remove();
+    const ids = new Set(posts.map(post => post.id));
+    for (const [id, card] of existing) {
+        if (!ids.has(id)) card.remove();
+    }
+    let cursor = postsFeed.firstElementChild;
+    for (const post of posts) {
+        let card = existing.get(post.id);
+        if (!card) card = createPostCard(post);
+        else {
+            updateLikeButton(card.querySelector('[data-action="like"]'), post);
+            const count = post.post_comments?.[0]?.count ?? 0;
+            card.querySelector('[data-action="comments"]').textContent =
+                `💬 ${count} ${count === 1 ? "comentário" : "comentários"}`;
+            card.querySelector('.post-content').textContent = post.content;
+        }
+        if (card !== cursor) postsFeed.insertBefore(card, cursor);
+        cursor = card.nextElementSibling;
+    }
 }
 
 // ==========================================
@@ -709,7 +712,6 @@ function renderEmptyFeed() {
 
 }
 
-
 // ==========================================
 // PUBLICAR TEXTO E IMAGEM
 // ==========================================
@@ -726,10 +728,10 @@ postForm.addEventListener("submit", async (event) => {
 
     isPublishing = true;
 
-    publishButton.disabled = false;
-    postContent.disabled = false;
-    addImageButton.disabled = false;
-    removeImageButton.disabled = false;
+    publishButton.disabled = true;
+    postContent.disabled = true;
+    addImageButton.disabled = true;
+    removeImageButton.disabled = true;
 
     publishButton.textContent = "Publicando...";
 
@@ -777,7 +779,7 @@ postForm.addEventListener("submit", async (event) => {
 
             // Erro explícito do banco: publicação rejeitada
 
-            if (/^[0-9A-Z]{5}$/.test(error.code || "")) {
+            if (/^(22|23|42)[0-9A-Z]{3}$/.test(error.code || "")) {
 
                 insertAttempted = false;
 
@@ -1007,7 +1009,7 @@ async function loadComments(postId, card) {
         console.error(error);
 
         list.textContent =
-            "Não foi possível carregar os comentários.";
+            `Não foi possível carregar os comentários: ${error.message || "erro desconhecido"}.`;
 
         return;
 
@@ -1141,26 +1143,6 @@ async function toggleComments(postId, card, button) {
     }
 
 }
-
-    // EXCLUIR PUBLICAÇÃO
-
-    if (action === "delete") {
-
-        button.disabled = true;
-
-        try {
-
-            await deletePost(postId);
-
-        } finally {
-
-            button.disabled = false;
-
-        }
-
-    }
-
-
 
 // ==========================================
 // CURTIR OU DESCURTIR PUBLICAÇÃO
@@ -1320,33 +1302,6 @@ async function deletePost(postId) {
         item => item.id === postId
     );
 
-
-    // EXCLUIR IMAGEM DO STORAGE
-
-if (post.image_path) {
-
-    try {
-
-        await removeStoredImage(
-            post.image_path
-        );
-
-    } catch (storageError) {
-
-        console.error(
-            "Publicação excluída, mas a imagem não foi removida:",
-            storageError
-        );
-
-        setStatus(
-            composerStatus,
-            "A publicação foi excluída, mas a foto precisa ser removida do Storage.",
-            true
-        );
-
-    }
-
-}
     if (!post) return;
 
     if (post.author_id !== currentUser.id) return;
@@ -1376,6 +1331,33 @@ if (post.image_path) {
             );
 
         }
+
+    // EXCLUIR IMAGEM DO STORAGE
+
+if (post.image_path) {
+
+    try {
+
+        await removeStoredImage(
+            post.image_path
+        );
+
+    } catch (storageError) {
+
+        console.error(
+            "Publicação excluída, mas a imagem não foi removida:",
+            storageError
+        );
+
+        setStatus(
+            composerStatus,
+            "A publicação foi excluída, mas a foto precisa ser removida do Storage.",
+            true
+        );
+
+    }
+
+}
 
         posts = posts.filter(
             item => item.id !== postId
@@ -1749,7 +1731,7 @@ postsFeed.addEventListener("submit", async (event) => {
 
         setStatus(
             status,
-            "Não foi possível enviar ou atualizar o comentário. Confira a lista antes de tentar novamente.",
+            `Não foi possível enviar ou atualizar o comentário: ${error.message || "erro desconhecido"}. Confira a lista antes de tentar novamente.`,
             true
         );
 
@@ -1944,6 +1926,7 @@ function subscribeToCommunity() {
 // ==========================================
 
 function updateRealtimeStatus(status) {
+    if (!realtimeStatus || !realtimeLabel) return;
 
     realtimeStatus.classList.remove(
         "is-online",
@@ -2200,11 +2183,9 @@ async function refreshCommunityFeed() {
                 '[data-action="comments"]'
             );
 
-            await toggleComments(
-                postId,
-                card,
-                button
-            );
+            if (!card.querySelector(".post-comments").hidden) {
+                await loadComments(postId, card);
+            }
 
         }
 
