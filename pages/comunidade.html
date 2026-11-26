@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Comunidade | Code Riders</title>
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/comunidade.css">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+    <main class="community-page">
+
+        <!-- NAVEGAÇÃO -->
+
+        <nav class="community-navigation"
+             aria-label="Navegação da comunidade">
+
+            <a href="../index.html"
+               class="community-logo">
+                CODE RIDERS.
+            </a>
+
+            <div class="community-nav-links">
+
+                <a href="./encontrar.html">
+                    Encontrar ciclistas
+                </a>
+
+                <a href="./conexoes.html">
+                    Meus Matches
+                </a>
+
+                <a href="./perfil.html">
+                    Meu perfil
+                </a>
+
+            </div>
+
+        </nav>
+
+        <!-- CABEÇALHO -->
+
+        <header class="community-header">
+
+            <p class="eyebrow">
+                CODE RIDERS COMMUNITY
+            </p>
+
+            <h1>Comunidade.</h1>
+
+            <p class="community-description">
+                Novos caminhos. Novas histórias.
+                Uma comunidade sobre duas rodas.
+            </p>
+
+        </header>
+
+        <!-- BANNER -->
+
+        <section class="community-banner">
+
+            <div>
+
+                <p class="banner-eyebrow">
+                    MAIS QUE CICLISMO
+                </p>
+
+                <h2>
+                    Juntos vamos mais longe.
+                </h2>
+
+                <p>
+                    Compartilhe suas aventuras,
+                    encontre inspiração e conecte-se
+                    com outros ciclistas.
+                </p>
+
+            </div>
+
+            <span class="banner-decoration"
+                  aria-hidden="true">
+                CR.
+            </span>
+
+        </section>
+
+        <!-- LAYOUT PRINCIPAL -->
+
+        <div class="community-layout">
+
+            <!-- COLUNA DO FEED -->
+
+            <div class="community-main">
+
+                <!-- CRIAR PUBLICAÇÃO -->
+
+                <section class="post-composer">
+
+                    <header class="composer-header">
+
+                        <div id="composer-avatar"
+                             class="community-avatar">
+                            CR
+                        </div>
+
+                        <div>
+
+                            <h2>Compartilhe seu pedal</h2>
+
+                            <p id="composer-user-name">
+                                Carregando perfil...
+                            </p>
+
+                        </div>
+
+                    </header>
+
+                    <form id="post-form">
+
+                        <label for="post-content"
+                               class="community-sr-only">
+                            Conteúdo da publicação
+                        </label>
+
+                        <textarea
+                            id="post-content"
+                            placeholder="Como foi seu pedal hoje?"
+                            maxlength="3000"
+                            rows="4"
+                            required
+                            disabled
+                        ></textarea>
+
+                        <div class="composer-counter">
+
+                            <span id="post-counter">
+                                0/3000
+                            </span>
+
+                        </div>
+
+                        <div class="composer-actions">
+
+                            <button
+                                type="button"
+                                class="post-image-button"
+                                disabled
+                                title="Disponível em uma próxima etapa"
+                            >
+                                📷 Adicionar foto
+                            </button>
+
+                            <button
+                                type="submit"
+                                id="publish-button"
+                                class="publish-button"
+                                disabled
+                            >
+                                Publicar →
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                    <p id="composer-status"
+                       class="community-status"
+                       role="status"
+                       aria-live="polite">
+                    </p>
+
+                </section>
+
+                <!-- FEED -->
+
+                <section class="feed-section"
+                         aria-labelledby="feed-title">
+
+                    <header class="feed-header">
+
+                        <h2 id="feed-title">
+                            Feed da comunidade
+                        </h2>
+
+                        <span class="feed-order">
+                            Mais recentes
+                        </span>
+
+                    </header>
+
+                    <div id="feed-status"
+                         class="community-status"
+                         role="status"
+                         aria-live="polite">
+
+                        Carregando publicações...
+
+                    </div>
+
+                    <div id="posts-feed"
+                         class="posts-feed">
+
+                        <!-- Publicações inseridas pelo JS -->
+
+                    </div>
+
+                </section>
+
+            </div>
+
+            <!-- BARRA LATERAL -->
+
+            <aside class="community-sidebar">
+
+                <!-- MEU PERFIL -->
+
+                <section class="sidebar-card">
+
+                    <p class="sidebar-eyebrow">
+                        SEU ESPAÇO
+                    </p>
+
+                    <div id="sidebar-avatar"
+                         class="sidebar-avatar">
+                        CR
+                    </div>
+
+                    <h2 id="sidebar-user-name">
+                        Meu perfil
+                    </h2>
+
+                    <p id="sidebar-user-location">
+                        Code Riders Community
+                    </p>
+
+                    <a href="./perfil.html"
+                       class="sidebar-button">
+                        Editar meu perfil →
+                    </a>
+
+                </section>
+
+                <!-- ESTATÍSTICAS -->
+
+                <section class="sidebar-card">
+
+                    <p class="sidebar-eyebrow">
+                        MINHA ATIVIDADE
+                    </p>
+
+                    <div class="community-stat">
+
+                        <span id="my-posts-count">
+                            —
+                        </span>
+
+                        <p>Publicações</p>
+
+                    </div>
+
+                    <div class="community-stat">
+
+                        <span id="my-likes-count">
+                            —
+                        </span>
+
+                        <p>Curtidas recebidas</p>
+
+                    </div>
+
+                    <div class="community-stat">
+
+                        <span id="my-matches-count">
+                            —
+                        </span>
+
+                        <p>Conexões realizadas</p>
+
+                    </div>
+
+                </section>
+
+                <!-- ENCONTRAR CICLISTAS -->
+
+                <section class="sidebar-card sidebar-highlight">
+
+                    <p class="sidebar-eyebrow">
+                        EXPLORE A COMUNIDADE
+                    </p>
+
+                    <h2>
+                        Seu próximo pedal começa aqui.
+                    </h2>
+
+                    <p>
+                        Encontre pessoas que compartilham
+                        sua paixão pelo ciclismo.
+                    </p>
+
+                    <a href="./encontrar.html"
+                       class="sidebar-button">
+                        Encontrar ciclistas →
+                    </a>
+
+                </section>
+
+                <!-- DIRETRIZES -->
+
+                <section class="sidebar-card">
+
+                    <p class="sidebar-eyebrow">
+                        NOSSA COMUNIDADE
+                    </p>
+
+                    <h2>Respeito em cada caminho.</h2>
+
+                    <p>
+                        Compartilhe experiências,
+                        incentive outros ciclistas
+                        e respeite as diferenças.
+                    </p>
+
+                </section>
+
+            </aside>
+
+        </div>
+
+        <!-- RODAPÉ -->
+
+        <footer class="community-footer">
+
+            <p>
+                CODE RIDERS — Mais que ciclismo.
+            </p>
+
+        </footer>
+
+    </main>
+
+    <script type="module"
+            src="../js/comunidade.js">
+    </script>
+
+</body>
+
+</html>
